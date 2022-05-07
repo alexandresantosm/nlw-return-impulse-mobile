@@ -1,4 +1,5 @@
-import { View } from 'react-native';
+import React from 'react';
+import { KeyboardAvoidingView, Platform } from 'react-native';
 import 'react-native-gesture-handler';
 import { StatusBar } from 'expo-status-bar';
 import AppLoading from 'expo-app-loading';
@@ -23,10 +24,12 @@ export default function App() {
   }
 
   return (
-    <View style={{
-      flex: 1,
-      backgroundColor: theme.colors.background,
-    }}
+    <KeyboardAvoidingView
+      behavior={Platform.OS === 'ios' && 'padding'}
+      style={{
+        flex: 1,
+        backgroundColor: theme.colors.background,
+      }}
     >
       <StatusBar
         style="light"
@@ -35,6 +38,6 @@ export default function App() {
       />
       
       <Widget />
-    </View>
+    </KeyboardAvoidingView>
   );
 };
