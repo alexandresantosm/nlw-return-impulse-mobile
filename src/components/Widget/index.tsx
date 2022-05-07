@@ -5,6 +5,7 @@ import BottomSheet from '@gorhom/bottom-sheet';
 import { gestureHandlerRootHOC } from 'react-native-gesture-handler';
 
 import { Options } from '../Options';
+import { Form } from '../Form';
 
 import { styles } from './styles';
 import { theme } from '../../theme';
@@ -36,7 +37,8 @@ const WidgetComponent: React.FC = () => {
         handleIndicatorStyle={styles.indicator}
       >
 
-        <Options />
+        {/* <Options /> */}
+        <Form feedbackType='BUG' />
       </BottomSheet>
     </>
   );
