@@ -9,6 +9,7 @@ import {
 } from 'react-native';
 
 import { FeedbackType, feedbackTypes } from '../../utils/feedbackTypes';
+import { ScreenshotButton } from '../ScreenshotButton';
 
 import { theme } from '../../theme';
 import { styles } from './styles';
@@ -57,6 +58,14 @@ export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
         placeholder='Algo não está funcionando bem? Queremos corrigir. Conte com detalhes o que está acontecendo...'
         placeholderTextColor={theme.colors.text_secondary}
       />
+
+      <View style={styles.footer}>
+        <ScreenshotButton
+          screenshot=''
+          onTakeScreenshot={() => {}}
+          onRemoveScreenshot={() => {}}
+        />
+      </View>
     </View>
   );
 }
