@@ -13,6 +13,8 @@ import { ScreenshotButton } from '../ScreenshotButton';
 
 import { theme } from '../../theme';
 import { styles } from './styles';
+import { Button } from '../Button';
+import { Copyright } from '../Copyright';
 
 interface FormProps {
   feedbackType: FeedbackType;
@@ -65,7 +67,13 @@ export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
           onTakeScreenshot={() => {}}
           onRemoveScreenshot={() => {}}
         />
+
+        <Button
+          isLoading={false}
+        />
       </View>
+
+      <Copyright />
     </View>
   );
 }
