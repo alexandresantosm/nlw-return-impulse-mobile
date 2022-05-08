@@ -19,11 +19,19 @@ import { Copyright } from '../Copyright';
 
 interface FormProps {
   feedbackType: FeedbackType;
+  onFeedbackCanceled: () => void;
+  onFeedbackSent: () => void;
+  onCloseFeedbackMenu: () => void;
 }
 
 const INITIAL_SCREENSHOT_STATE = null;
 
-export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
+export const Form: React.FC<FormProps> = ({
+  feedbackType,
+  onFeedbackCanceled,
+  onFeedbackSent,
+  onCloseFeedbackMenu
+}: FormProps) => {
   const [screenshot, setScreenshot] = useState<string | null>(INITIAL_SCREENSHOT_STATE);
 
   const feedbackTypeInfo = feedbackTypes[feedbackType];
@@ -45,7 +53,9 @@ export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={onFeedbackCanceled}
+      >
         <ArrowLeft
           size={24}
           weight='bold'
@@ -64,7 +74,9 @@ export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
         </Text>
       </View>
 
-      <TouchableOpacity>
+      <TouchableOpacity
+        onPress={onCloseFeedbackMenu}
+      >
         <X
           size={24}
           weight='bold'
@@ -78,6 +90,7 @@ export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
         style={styles.input}
         placeholder='Algo não está funcionando bem? Queremos corrigir. Conte com detalhes o que está acontecendo...'
         placeholderTextColor={theme.colors.text_secondary}
+        autoCorrect={false}
       />
 
       <View style={styles.footer}>
