@@ -39,8 +39,8 @@ const WidgetComponent: React.FC = () => {
       >
 
         {/* <Options /> */}
-        {/* <Form feedbackType='BUG' /> */}
-        <Success />
+        <Form feedbackType='BUG' />
+        {/* <Success /> */}
       </BottomSheet>
     </>
   );

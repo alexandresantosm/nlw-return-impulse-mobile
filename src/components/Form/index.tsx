@@ -1,5 +1,4 @@
-import { ArrowLeft, X } from 'phosphor-react-native';
-import React from 'react';
+import React, { useState }  from 'react';
 import {
   Image,
   Text,
@@ -7,6 +6,8 @@ import {
   TouchableOpacity,
   View
 } from 'react-native';
+import { ArrowLeft, X } from 'phosphor-react-native';
+import { captureScreen } from 'react-native-view-shot';
 
 import { FeedbackType, feedbackTypes } from '../../utils/feedbackTypes';
 import { ScreenshotButton } from '../ScreenshotButton';
@@ -20,8 +21,26 @@ interface FormProps {
   feedbackType: FeedbackType;
 }
 
+const INITIAL_SCREENSHOT_STATE = null;
+
 export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
+  const [screenshot, setScreenshot] = useState<string | null>(INITIAL_SCREENSHOT_STATE);
+
   const feedbackTypeInfo = feedbackTypes[feedbackType];
+
+  const handleScreenshot = () => {
+    captureScreen({
+      format: 'jpg',
+      quality: 0.8,
+    })
+      .then(uri => setScreenshot(uri))
+      .catch(error => console.error(error)
+    );
+  };
+
+  const handleScreenshotRemove = () => {
+    setScreenshot(INITIAL_SCREENSHOT_STATE);
+  }
 
   return (
     <View style={styles.container}>
@@ -63,9 +82,9 @@ export const Form: React.FC<FormProps> = ({ feedbackType }: FormProps) => {
 
       <View style={styles.footer}>
         <ScreenshotButton
-          screenshot=''
-          onTakeScreenshot={() => {}}
-          onRemoveScreenshot={() => {}}
+          screenshot={screenshot}
+          onTakeScreenshot={handleScreenshot}
+          onRemoveScreenshot={handleScreenshotRemove}
         />
 
         <Button
