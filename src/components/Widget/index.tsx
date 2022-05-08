@@ -21,10 +21,22 @@ const WidgetComponent: React.FC = () => {
 
   const handleFeedbackTypeChange = (fedbackType: FeedbackType) => setFeedbackType(fedbackType);
 
+  const handleRestartFeedback = () => {
+    setFeedbackType(INITIAL_FEEDBACK_TYPE_STATE);
+    setFeedbackSent(INITIAL_FEEDBACK_SENT_STATE);
+  };
+
+  const handleFeedbackSent = () => setFeedbackSent(true);
+
   const bottomSheetRef = useRef<BottomSheet>(null);
 
   const handleOpenFeedbackMenu = () => {
     bottomSheetRef.current?.expand();
+  }
+
+  const handleCloseFeedbackMenu = () => {
+    bottomSheetRef.current?.close();
+    handleRestartFeedback();
   }
 
   return (
@@ -56,7 +68,12 @@ const WidgetComponent: React.FC = () => {
             {
               feedbackType
               ?
-              <Form feedbackType={feedbackType} />
+              <Form
+                feedbackType={feedbackType}
+                onFeedbackCanceled={handleRestartFeedback}
+                onFeedbackSent={handleFeedbackSent}
+                onCloseFeedbackMenu={handleCloseFeedbackMenu}
+              />
               :
               <Options onFeedbackTypeChange={handleFeedbackTypeChange} />
             }
