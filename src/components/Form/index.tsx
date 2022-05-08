@@ -8,14 +8,16 @@ import {
 } from 'react-native';
 import { ArrowLeft, X } from 'phosphor-react-native';
 import { captureScreen } from 'react-native-view-shot';
+import * as FileSystem from 'expo-file-system';
 
 import { FeedbackType, feedbackTypes } from '../../utils/feedbackTypes';
 import { ScreenshotButton } from '../ScreenshotButton';
+import { Button } from '../Button';
+import { Copyright } from '../Copyright';
+import { api } from '../../lib/api';
 
 import { theme } from '../../theme';
 import { styles } from './styles';
-import { Button } from '../Button';
-import { Copyright } from '../Copyright';
 
 interface FormProps {
   feedbackType: FeedbackType;
@@ -25,6 +27,8 @@ interface FormProps {
 }
 
 const INITIAL_SCREENSHOT_STATE = null;
+const INITIAL_SENDING_FEEDBACK_STATE = false;
+const INITIAL_COMMENT_STATE = '';
 
 export const Form: React.FC<FormProps> = ({
   feedbackType,
@@ -32,7 +36,9 @@ export const Form: React.FC<FormProps> = ({
   onFeedbackSent,
   onCloseFeedbackMenu
 }: FormProps) => {
+  const [isSendingFeedback, setIsSendingFeedback] = useState(INITIAL_SENDING_FEEDBACK_STATE);
   const [screenshot, setScreenshot] = useState<string | null>(INITIAL_SCREENSHOT_STATE);
+  const [comment, setComment] = useState<string | null>(INITIAL_COMMENT_STATE);
 
   const feedbackTypeInfo = feedbackTypes[feedbackType];
 
@@ -48,6 +54,40 @@ export const Form: React.FC<FormProps> = ({
 
   const handleScreenshotRemove = () => {
     setScreenshot(INITIAL_SCREENSHOT_STATE);
+  }
+
+  const handleInputChange = (commentSent: string) => {
+    setComment(commentSent);
+  }
+
+  const handleSendFeedback = async () => {
+    if (isSendingFeedback) {
+      return;
+    }
+
+    setIsSendingFeedback(true);
+
+    const screenshotBase64 = 
+      screenshot
+      &&
+        await FileSystem
+          .readAsStringAsync(
+            screenshot,
+            { encoding: 'base64'}
+          );
+
+    try {
+      await api.post('/feedbacks', {
+        type: feedbackType,
+        comment,
+        screenshot: `data:image/png;base64, ${screenshotBase64}`,
+      });
+      
+      onFeedbackSent();
+    } catch (error) {
+      console.error(error);
+      setIsSendingFeedback(INITIAL_SENDING_FEEDBACK_STATE);
+    }
   }
 
   return (
@@ -91,6 +131,7 @@ export const Form: React.FC<FormProps> = ({
         placeholder='Algo não está funcionando bem? Queremos corrigir. Conte com detalhes o que está acontecendo...'
         placeholderTextColor={theme.colors.text_secondary}
         autoCorrect={false}
+        onChangeText={(commentSent) => handleInputChange(commentSent)}
       />
 
       <View style={styles.footer}>
@@ -101,7 +142,8 @@ export const Form: React.FC<FormProps> = ({
         />
 
         <Button
-          isLoading={false}
+          onPress={handleSendFeedback}
+          isLoading={isSendingFeedback}
         />
       </View>
 

@@ -62,7 +62,7 @@ const WidgetComponent: React.FC = () => {
         {
           feedbackSent
           ?
-          <Success />
+          <Success onSendAnotherFeedback={handleRestartFeedback} />
           :
           <>
             {

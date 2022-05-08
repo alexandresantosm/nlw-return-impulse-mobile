@@ -11,7 +11,11 @@ import { Copyright } from '../Copyright';
 
 import { styles } from './styles';
 
-export const Success: React.FC = () => {
+interface SuccessProps {
+  onSendAnotherFeedback: () => void;
+}
+
+export const Success: React.FC<SuccessProps> = ({ onSendAnotherFeedback }: SuccessProps) => {
   return (
     <View style={styles.container}>
       <Image
@@ -25,7 +29,10 @@ export const Success: React.FC = () => {
         Agradecemos o feedback!
       </Text>
 
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity
+        onPress={onSendAnotherFeedback}
+        style={styles.button}
+      >
         <Text style={styles.buttonTitle}>
           Quero enviar outro
         </Text>
