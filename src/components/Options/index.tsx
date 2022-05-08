@@ -2,12 +2,16 @@ import React from 'react';
 import { Text, View } from 'react-native';
 import { Copyright } from '../Copyright';
 
-import { feedbackTypes } from '../../utils/feedbackTypes';
+import { FeedbackType, feedbackTypes } from '../../utils/feedbackTypes';
 
 import { styles } from './styles';
 import { Option } from '../Option';
 
-export const Options: React.FC = () => {
+interface OptionsProps {
+  onFeedbackTypeChange: (fedbackType: FeedbackType) => void;
+}
+
+export const Options: React.FC<OptionsProps> = ({ onFeedbackTypeChange }: OptionsProps) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>
@@ -23,6 +27,7 @@ export const Options: React.FC = () => {
                   key={`${key}-${index}`}
                   title={value.title}
                   image={value.image}
+                  onPress={() => onFeedbackTypeChange(key as FeedbackType)}
                 />
               ))
         }
