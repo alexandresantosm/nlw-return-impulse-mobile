@@ -14,7 +14,7 @@ interface OptionProps extends TouchableOpacityProps {
   image: ImageProps;
 }
 
-export const Option: React.FC<OptionProps> = ({ title, image, ...rest}: OptionProps) => {
+export const Option: React.FC<OptionProps> = ({ title, image, ...rest }: OptionProps) => {
   return (
     <TouchableOpacity
       {...rest}
